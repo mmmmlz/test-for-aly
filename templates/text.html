@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{# 页面标题 #}
+{% block title %}
+    我的网站|首页
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="/static/css/home.css">
+   <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+{% endblock %}{# 页面内容 #}
+
+{% block nav_home_active %}
+active
+{% endblock %}
+
+
+
+{% block content %}
+   <h3 class="home_content">欢迎访问我的网站，随便看</h3>
+  <!-- 图表容器 DOM -->
+    <div id="container" ></div>
+     {# 热门博客内容   #}
+    <div class="hot-data">
+      <h3>Today Hot</h3>
+        <ul>
+            {%  for hot_data in today_hot_data %}
+                <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
+            {% empty %}
+                <li>no blogs </li>
+            {% endfor %}
+        </ul>
+    </div>
+            
+    <div class="hot-data">
+      <h3>Yesterday Hot</h3>
+        <ul>
+            {%  for hot_data in yesterday_hot_data %}
+                <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
+            {% empty %}
+                <li>no blogs</li>
+            {% endfor %}
+        </ul>
+      </div>
+    <!-- 引入 highcharts.js -->
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        // 图表配置
+        var options = {
+            chart: { type: 'line' },
+            title: {text: null    },
+            xAxis: {categories: {{ dates|safe }} ,
+                    tickmarkPlacement: 'on',
+                    title:{text:'最近阅读量'}
+            },
+            yAxis: {
+                title: {text: null},
+                labels:{enabled:false},
+                gridLineDashStyle:'Dash'
+            },
+            series: [{                              // 数据列
+                name: '阅读量',                        // 数据列名
+                data: {{ read_nums }}                     // 数据
+            }],
+
+            legend:{enabled:false},
+            credits:{enabled:false}
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
+{% endblock %}

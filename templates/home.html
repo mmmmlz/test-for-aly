@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{# 页面标题 #}
+{% block title %}
+    我的网站|首页
+{% endblock %}
+
+{% block header_extend %}
+    <link rel="stylesheet" href="/static/css/home.css">
+   <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+{% endblock %}{# 页面内容 #}
+
+{% block nav_home_active %}
+active
+{% endblock %}
+
+
+
+{% block content %}
+
+
+     {# 热门博客内容   #}
+
+    <div class="container">
+        <div class="row">
+            <div class="clo-xs-3 col-sm-4 col-md-4 col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">简介</div>
+                        <div class="panel-body">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a style="font-family: 'Arial'" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+           关于洛绵小站
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+            洛绵小站是一个记录学习心得，分享自己日常生活的趣事的地方，目前只有博客功能，我会努力完善的~~
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          关于我
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+            作者是在校大学生，课余时间不定期更新，有喜欢python，web开发和机器学习的朋友可以联系我哟~~~
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          联系我
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+          QQ：825340277
+          微信：<img src="{% static 'wx.jpg' %}" title="梅长苏"  alt="weixin：" />
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                        </div>
+                    </div>
+
+            </div>
+            <div class="clo-xs-3 clo-sm-4 col-md-4 col-lg-4">
+                 <div class="panel panel-default">
+                        <div class="panel-heading">今日阅读趋势图</div>
+                        <div class="panel-body">
+                        <div id="container" ></div>
+                 </div>
+             </div>
+          </div>
+        <div class="clo-xs-3 clo-sm-4 col-md-4 col-lg-4">
+                 <div class="panel panel-default">
+                        <div class="panel-heading">近期热门文章</div>
+                        <div class="panel-body">
+                             <div class="me">
+      <div class="hot-data">
+      <h3>Today Hot</h3>
+        <ul>
+            {%  for hot_data in today_hot_data %}
+                <li style="list-style-type: none"><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
+            {% empty %}
+                <li  style="list-style-type: none">no blogs </li>
+            {% endfor %}
+        </ul>
+    </div>
+       <div class="hot-data">
+      <h3>Yesterday Hot</h3>
+        <ul>
+            {%  for hot_data in yesterday_hot_data %}
+                <li  style="list-style-type: none"><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                    {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
+            {% empty %}
+                <li  style="list-style-type: none">no blogs</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+                 </div>
+             </div>
+
+{#            <div class="panel panel-default">#}
+{#                 <div class="panel-heading">日期归档</div>#}
+{#                <div class="panel-body">#}
+{#                    <ul>#}
+{#                         {% for blog_date ,blog_count in blog_dates.items %}#}
+{#                               <li><a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">#}
+{#                                    {{ blog_date|date:"Y年m月" }} ({{ blog_count }})#}
+{#                               </a>#}
+{#                                  </li>#}
+{#                          {% endfor %}#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+          </div>
+       </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- 引入 highcharts.js -->
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script>
+        // 图表配置
+        var options = {
+            chart: { type: 'line' },
+            title: {text: '最近阅读量'    },
+            xAxis: {categories: {{ dates|safe }} ,
+                    tickmarkPlacement: 'on',
+            },
+            yAxis: {
+                title: {text: null},
+                labels:{enabled:false},
+                gridLineDashStyle:'Dash'
+            },
+            series: [{                              // 数据列
+                name: '阅读量',                        // 数据列名
+                data: {{ read_nums }}                     // 数据
+            }],
+
+            legend:{enabled:false},
+            credits:{enabled:false}
+        };
+        // 图表初始化函数
+        var chart = Highcharts.chart('container', options);
+    </script>
+{% endblock %}
