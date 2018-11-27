@@ -17,9 +17,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'o6gf^8$mnfxy51y(sx_$ar9r!f4^=1zgk!gl=)jp%45dbv!c#k'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,6 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
 STATICFILES_DIRS= [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -158,7 +159,7 @@ CKEDITOR_CONFIGS={
 }
 
 # 定义每页文章数
-EACH_PAGE_BLOG_NUM = 2
+EACH_PAGE_BLOG_NUM = 3
 
 # 缓存设置
 CACHES ={
