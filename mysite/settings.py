@@ -149,7 +149,7 @@ CKEDITOR_CONFIGS={
 }
 
 # 定义每页文章数
-EACH_PAGE_BLOG_NUM = 3
+EACH_PAGE_BLOG_NUM = 4
 
 # 缓存设置
 CACHES ={

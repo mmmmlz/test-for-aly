@@ -99,7 +99,7 @@ active
       <h3>Today Hot</h3>
         <ul>
             {%  for hot_data in today_hot_data %}
-                <li style="list-style-type: none"><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                <li style="list-style-type: none"><a href="{% url 'blog_detail' 2 %}">
                     {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
             {% empty %}
                 <li  style="list-style-type: none">no blogs </li>
@@ -110,7 +110,7 @@ active
       <h3>Yesterday Hot</h3>
         <ul>
             {%  for hot_data in yesterday_hot_data %}
-                <li  style="list-style-type: none"><a href="{% url 'blog_detail' hot_data.content_object.pk %}">
+                <li  style="list-style-type: none"><a href="{% url 'blog_detail' 1 %}">
                     {{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>
             {% empty %}
                 <li  style="list-style-type: none">no blogs</li>
